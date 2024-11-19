@@ -1,5 +1,6 @@
 package com.group.libarayapp.calculator
 
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -46,17 +47,30 @@ class CalculatorTest {
         assertEquals(25, calculator.number)
     }
 
-    @Test
     @DisplayName("나누기 테스트")
-    fun divide() {
-        // given
+    @Test
+    fun divideExceptionTest(){
+        //gvien
         val calculator = Calculator(5)
 
-        // then
-//        assertFailsWith<IllegalArgumentException> {
-//            calculator.divide(10)
-//        }
-    }
+        //when
+        try {
+            calculator.divide(0);
+        } catch (e: IllegalArgumentException) {
+            if(e.message != "Division by zero") {
+                throw IllegalArgumentException("예외 메시지가 다릅니다.")
+            }
+            //테스트 성공 !
+            return
+        } catch (e: RuntimeException){
+            throw IllegalArgumentException()
+        }
 
+        throw IllegalArgumentException("기대하는 예외가 발생하지 않았음")
+
+        //then
+
+
+    }
 
 }

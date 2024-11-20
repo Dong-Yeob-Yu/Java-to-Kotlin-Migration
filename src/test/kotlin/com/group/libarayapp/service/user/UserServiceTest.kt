@@ -4,8 +4,11 @@ import com.group.libraryapp.LibraryAppApplication
 import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.dto.user.request.UserCreateRequest
+import com.group.libraryapp.dto.user.request.UserUpdateRequest
+import com.group.libraryapp.dto.user.response.UserResponse
 import com.group.libraryapp.service.user.UserService
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -18,6 +21,11 @@ class UserServiceTest (
     @Autowired private val userRepository: UserRepository,
     @Autowired private val userService: UserService
 ) {
+
+    @AfterEach
+    fun clean(){
+        userRepository.deleteAll()
+    }
 
     @DisplayName("유저 저장 테스트")
     @Test
@@ -36,7 +44,53 @@ class UserServiceTest (
 
         // 자바 -> 코틀린일떈 null safe 로 생각하고 가져옴 -> 플랫폼 타입 java getter 에 jetbrains 어노테이션 붙혀야함. null, nullable
         Assertions.assertThat(findAll[0].age).isEqualTo(null)
+    }
 
+    @DisplayName("조회 테스트")
+    @Test
+    fun getUserTest(){
+        //given
+        userRepository.saveAll(listOf(
+            User("A", 10),
+            User("B", 20),
+            User("C", null),
+        ))
+        //when
+        val users: List<UserResponse> = userService.getUsers()
+
+        //then
+        Assertions.assertThat(users.size).isEqualTo(3)
+        Assertions.assertThat(users).extracting("name").containsExactlyInAnyOrder("A", "B", "C")
+        Assertions.assertThat(users).extracting("age").containsExactlyInAnyOrder(10, 20, null)
+    }
+
+    @DisplayName("유저 업데이트 테스트")
+    @Test
+    fun updateUserNameTest(){
+        //given
+        val savedUser = userRepository.save(User("A", null))
+
+        //when
+        val request = UserUpdateRequest(savedUser.id, "B")
+        userService.updateUserName(request)
+
+        //then
+        val users: UserResponse = userService.getUsers().get(0)
+        Assertions.assertThat(users).isEqualTo(request.name)
+
+    }
+
+    @DisplayName("유저 삭제")
+    @Test
+    fun deleteUserTest(){
+        //given
+        val savedUser = userRepository.save(User("A", null))
+
+        //when
+        userService.deleteUser("A")
+
+        //then
+        Assertions.assertThat(userRepository.findAll()).isEmpty();
 
     }
 

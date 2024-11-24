@@ -16,7 +16,7 @@ class JunitCalculatorTest {
         //when
         val message = assertThrows<IllegalArgumentException> {
             calculator.divide(0)
-        }
+        }.message
 
 
         //then

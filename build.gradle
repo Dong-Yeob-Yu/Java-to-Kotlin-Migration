@@ -3,6 +3,9 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '2.0.20'
+
+    // JPA 사용시 기본 생성자 문제 해결
+    id("org.jetbrains.kotlin.plugin.jpa") version "2.0.20"
 }
 
 group = 'com.group'
@@ -19,6 +22,7 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    implementation('org.jetbrains.kotlin:kotlin-reflect:2.0.20')
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 }
 

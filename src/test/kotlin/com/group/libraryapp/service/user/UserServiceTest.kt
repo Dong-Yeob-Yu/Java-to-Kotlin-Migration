@@ -1,4 +1,4 @@
-package com.group.libarayapp.service.user
+package com.group.libraryapp.service.user
 
 import com.group.libraryapp.LibraryAppApplication
 import com.group.libraryapp.domain.user.User
@@ -6,20 +6,17 @@ import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
 import com.group.libraryapp.dto.user.response.UserResponse
-import com.group.libraryapp.service.user.UserService
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
 
-@SpringBootTest(classes = [LibraryAppApplication::class])
-class UserServiceTest (
-    @Autowired private val userRepository: UserRepository,
-    @Autowired private val userService: UserService
+@SpringBootTest
+class UserServiceTest @Autowired constructor (
+    private val userRepository: UserRepository,
+    private val userService: UserService
 ) {
 
     @AfterEach
@@ -76,7 +73,7 @@ class UserServiceTest (
 
         //then
         val users: UserResponse = userService.getUsers().get(0)
-        Assertions.assertThat(users).isEqualTo(request.name)
+        Assertions.assertThat(users.name).isEqualTo(request.name)
 
     }
 

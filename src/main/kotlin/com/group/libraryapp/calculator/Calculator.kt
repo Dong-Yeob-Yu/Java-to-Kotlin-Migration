@@ -1,4 +1,4 @@
-package com.group.libarayapp.calculator
+package com.group.libraryapp.calculator
 
 class Calculator(
     var number: Int,

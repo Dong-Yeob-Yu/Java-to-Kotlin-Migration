@@ -6,6 +6,7 @@ plugins {
 
     // JPA 사용시 기본 생성자 문제 해결
     id("org.jetbrains.kotlin.plugin.jpa") version "2.0.20"
+    id("org.jetbrains.kotlin.plugin.spring") version "2.0.20"
 }
 
 group = 'com.group'

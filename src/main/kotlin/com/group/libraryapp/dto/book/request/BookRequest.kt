@@ -1,5 +1,5 @@
 package com.group.libraryapp.dto.book.request
 
-class BookRequest {
-    val name: String? = null
-}
+data class BookRequest (
+    val name: String
+)

@@ -2,8 +2,6 @@ package com.group.libraryapp.service.user
 
 import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
-import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
-import com.group.libraryapp.dto.user.BookHistoryResponse
 import com.group.libraryapp.dto.user.UserLoanHistoryResponse
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
@@ -43,17 +41,8 @@ class UserService constructor(
 
     @Transactional(readOnly = true)
     fun getUserLoanHistories(): List<UserLoanHistoryResponse> {
-        return userRepository.findAll().map { user ->
-            UserLoanHistoryResponse(
-                name = user.name,
-                books = user.userLoanHistories.map { history ->
-                    BookHistoryResponse(
-                        name = history.bookName,
-                        isReturn = history.status == UserLoanStatus.RETURNED,
-                    )
-                }
-            )
-        }
+        // 메소드 레퍼런스
+        return userRepository.findAllWithHistories().map(UserLoanHistoryResponse::of)
     }
 
 }
